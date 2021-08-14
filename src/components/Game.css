@@ -1,9 +1,29 @@
 .Game {
   text-align: center;
   font-family: "Andale Mono";
+  width: auto;
+  margin: 20px;
 }
 
+.GameContainer {
+  display: inline-block
+}
 .centerLetter {
   font-weight: bold;
   color: goldenrod;
+}
+
+.controlBar {
+  margin-top: 10px;
+  width: auto;
+}
+
+.controlButton {
+  margin-left:10px;
+}
+
+.finePrint {
+  font-size: 0.6em;
+  text-align: right;
+  margin-top: 5px;
 }

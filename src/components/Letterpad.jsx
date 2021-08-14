@@ -31,7 +31,9 @@ class Letterpad extends React.Component {
 
         return (
             <div>
-                <div><span className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp; <span>{letters}</span>
+                <div><span
+                    className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp;
+                    <span>{letters}</span>
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text"
@@ -40,7 +42,8 @@ class Letterpad extends React.Component {
                            value={currentWord}
                            onChange={this.handleChange}
                     />
-                    <input type="submit" value="go"/>
+                    <input className="controlButton"
+                           type="submit" value="go"/>
                 </form>
             </div>
         );

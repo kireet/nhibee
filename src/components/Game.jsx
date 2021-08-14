@@ -4,6 +4,7 @@ import './Game.css';
 import ScoreBoard from "./ScoreBoard";
 import WordBank from "./WordBank";
 import Letterpad from "./Letterpad";
+import Controller from "./Controller";
 
 class Game extends React.Component {
     constructor(props) {
@@ -14,7 +15,10 @@ class Game extends React.Component {
             pangrams: new Set(),
             solutions: new Set(),
             solved: new Set(),
-            userEntryState: ""
+            userEntryState: "",
+            dayNumber: this.getDayNumber(),
+            words: []
+
         }
     }
 
@@ -24,7 +28,7 @@ class Game extends React.Component {
             .then(
                 words => {
                     console.log(`received ${words.length} words`);
-                    this.processWordList(words);
+                    this.processWordList(this.state.dayNumber, words);
                 },
                 err => {
 
@@ -32,27 +36,25 @@ class Game extends React.Component {
             );
     }
 
-    processWordList(words) {
+    processWordList(dayNumber, words) {
         let letterChoices = new Set();
         for (const word of words) {
             let letters = new Set(word);
-            if (letters.size === 7 && !letters.has("s")) {
+            if (letters.size === 7) {
                 letterChoices.add(letters);
             }
         }
         letterChoices = Array.from(letterChoices).sort();
-        const day = this.getDayNumber();
-        const letters = letterChoices[day % letterChoices.length];
+        const letters = letterChoices[dayNumber % letterChoices.length];
         const sortedLetters = Array.from(letters).sort();
-        let idx = day % 7;
+        let idx = dayNumber % 7;
         const keyLetter = sortedLetters[idx];
         sortedLetters.splice(sortedLetters.indexOf(keyLetter), 1);
 
         const solutions = new Set();
         const pangrams = new Set();
         for (const word of words) {
-            if (word.length >= 4 &&
-                word.includes(keyLetter) &&
+            if (word.includes(keyLetter) &&
                 Array.from(word).every(l => letters.has(l))) {
                 solutions.add(word);
                 if (new Set(word).size === 7) {
@@ -65,6 +67,8 @@ class Game extends React.Component {
             keyLetter,
             pangrams,
             solutions,
+            words,
+            dayNumber,
             letters: this.shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
         });
     }
@@ -97,19 +101,22 @@ class Game extends React.Component {
     }
 
     render() {
-        let {keyLetter, letters, solved, solutions, pangrams} = this.state;
+        let {keyLetter, letters, solved, solutions, pangrams, dayNumber} = this.state;
         letters = letters.join(" ");
         return (
             <div className="Game">
-                <ScoreBoard solved={solved} solutions={solutions} pangrams={pangrams}/>
-                <Letterpad keyLetter={keyLetter}
-                           letters={letters}
-                           onSubmit={w => this.handleNewWord(w)}
-                />
-                <WordBank solved={solved}/>
-                <button
-                    style={{margin: "10px"}}
-                    onClick={() => this.revealAll()}>Reveal</button>
+                <div className="GameContainer">
+                    <ScoreBoard solved={solved} solutions={solutions}
+                                pangrams={pangrams}/>
+                    <Letterpad keyLetter={keyLetter}
+                               letters={letters}
+                               onSubmit={w => this.handleNewWord(w)}
+                    />
+                    <WordBank solved={solved}/>
+                    <Controller dayNumber={dayNumber}
+                                onReveal={() => this.revealAll()}
+                                onYesterday={() => this.goToYesterday()}/>
+                </div>
             </div>
         );
     }
@@ -117,7 +124,7 @@ class Game extends React.Component {
     handleNewWord(w) {
         try {
             this.validateWord(w);
-        } catch(e) {
+        } catch (e) {
             alert(e.message);
             return;
         }
@@ -130,24 +137,24 @@ class Game extends React.Component {
     validateWord(w) {
         const {solved, solutions, keyLetter, letters} = this.state;
 
-        if(w === "") {
+        if (w === "") {
             throw new ValidationError("no letters");
         }
 
-        if(solved.has(w)) {
+        if (solved.has(w)) {
             throw new ValidationError("already found word");
         }
 
-        if(!w.includes(keyLetter)) {
+        if (!w.includes(keyLetter)) {
             throw new ValidationError("missing center letter");
         }
 
         const bad = Array.from(w).filter(l => l != keyLetter && !letters.includes(l));
-        if(bad.length > 0) {
+        if (bad.length > 0) {
             throw new ValidationError("other letters used");
         }
 
-        if(!solutions.has(w)) {
+        if (!solutions.has(w)) {
             throw new ValidationError("not in word list");
         }
     }
@@ -156,6 +163,10 @@ class Game extends React.Component {
         this.setState({
             solved: this.state.solutions
         })
+    }
+
+    goToYesterday() {
+        this.processWordList(this.state.dayNumber - 1, this.state.words);
     }
 }
 
