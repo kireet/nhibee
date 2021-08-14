@@ -107,6 +107,9 @@ class Game extends React.Component {
                            onSubmit={w => this.handleNewWord(w)}
                 />
                 <WordBank solved={solved}/>
+                <button
+                    style={{margin: "10px"}}
+                    onClick={() => this.revealAll()}>Reveal</button>
             </div>
         );
     }
@@ -147,6 +150,12 @@ class Game extends React.Component {
         if(!solutions.has(w)) {
             throw new ValidationError("not in word list");
         }
+    }
+
+    revealAll() {
+        this.setState({
+            solved: this.state.solutions
+        })
     }
 }
 

@@ -13,7 +13,7 @@ class Letterpad extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({currentWord: event.target.value});
+        this.setState({currentWord: event.target.value.toLowerCase()});
     }
 
     handleSubmit(event) {
@@ -28,9 +28,10 @@ class Letterpad extends React.Component {
     render() {
         const {keyLetter, letters} = this.props;
         const {currentWord} = this.state;
+
         return (
             <div>
-                <div><span>{keyLetter}</span>&nbsp;&nbsp;&nbsp; <span>{letters}</span>
+                <div><span className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp; <span>{letters}</span>
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text"

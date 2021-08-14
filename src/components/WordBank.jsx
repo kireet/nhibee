@@ -6,7 +6,11 @@ function WordBank(props) {
         return a.length - b.length;
     });
     words = words.map((word, idx) => {
-        return <span key={idx}>{word}&nbsp;</span>
+        if(new Set(word).size === 7) {
+            return <div key={idx}><b>{word}</b></div>
+        } else {
+            return <div key={idx}>{word}</div>
+        }
     });
     return (
         <div>
