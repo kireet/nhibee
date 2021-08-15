@@ -69,6 +69,7 @@ class Game extends React.Component {
             solutions,
             words,
             dayNumber,
+            solved: new Set(),
             letters: this.shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
         });
     }
