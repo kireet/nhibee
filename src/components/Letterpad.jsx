@@ -35,9 +35,12 @@ class Letterpad extends React.Component {
                     className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp;
                     <span>{letters}</span>
                 </div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}
+                      autoComplete="off">
                     <input type="text"
                            autoComplete="off"
+                           autoCapitalize="off"
+                           autoCorrect="off"
                            autoFocus
                            value={currentWord}
                            onChange={this.handleChange}
