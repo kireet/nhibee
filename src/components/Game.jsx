@@ -5,10 +5,13 @@ import ScoreBoard from "./ScoreBoard";
 import WordBank from "./WordBank";
 import Letterpad from "./Letterpad";
 import Controller from "./Controller";
+import {withCookies, Cookies} from 'react-cookie';
 
 class Game extends React.Component {
+
     constructor(props) {
         super(props);
+
         this.state = {
             keyLetter: '',
             letters: [],
@@ -53,6 +56,10 @@ class Game extends React.Component {
 
         const solutions = new Set();
         const pangrams = new Set();
+
+        const {cookies} = this.props;
+        let solved = cookies.get("day" + dayNumber) || [];
+
         for (const word of words) {
             if (word.includes(keyLetter) &&
                 Array.from(word).every(l => letters.has(l))) {
@@ -63,13 +70,15 @@ class Game extends React.Component {
             }
         }
 
+        solved = new Set(solved.filter(w => solutions.has(w)));
+
         this.setState({
             keyLetter,
             pangrams,
             solutions,
             words,
             dayNumber,
-            solved: new Set(),
+            solved,
             letters: this.shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
         });
     }
@@ -130,8 +139,12 @@ class Game extends React.Component {
             return;
         }
 
+        const solved = new Set(this.state.solved.add(w));
+
+        const {cookies} = this.props;
+        cookies.set("day" + this.state.dayNumber, Array.from(solved));
         this.setState({
-            solved: new Set(this.state.solved.add(w))
+            solved
         })
     }
 
@@ -178,4 +191,4 @@ class ValidationError extends Error {
     }
 }
 
-export default Game;
+export default withCookies(Game);
