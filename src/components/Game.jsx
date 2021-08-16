@@ -5,7 +5,7 @@ import ScoreBoard from "./ScoreBoard";
 import WordBank from "./WordBank";
 import Letterpad from "./Letterpad";
 import Controller from "./Controller";
-import {withCookies, Cookies} from 'react-cookie';
+import {withCookies} from 'react-cookie';
 
 class Game extends React.Component {
 
@@ -163,7 +163,7 @@ class Game extends React.Component {
             throw new ValidationError("missing center letter");
         }
 
-        const bad = Array.from(w).filter(l => l != keyLetter && !letters.includes(l));
+        const bad = Array.from(w).filter(l => l !== keyLetter && !letters.includes(l));
         if (bad.length > 0) {
             throw new ValidationError("other letters used");
         }
