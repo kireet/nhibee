@@ -1,15 +1,29 @@
 import React from 'react';
+import shuffle from "../utils";
 
 class Letterpad extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currentWord: ""
+            currentWord: "",
+            letters: this.props.letters.slice(0)
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        /* this is maybe not the best approach. ideally we could save a random
+         * seed value and shuffle the letters in a local array in render()
+         * based on the seed
+         */
+        if (new Set(this.state.letters) !== new Set(nextProps.letters)) {
+            this.setState({
+                letters: nextProps.letters
+            });
+        }
     }
 
     handleChange(event) {
@@ -26,14 +40,17 @@ class Letterpad extends React.Component {
 
 
     render() {
-        const {keyLetter, letters} = this.props;
-        const {currentWord} = this.state;
+        const {keyLetter} = this.props;
+        const {currentWord, letters} = this.state;
 
+        const renderedLetters = letters.join(" ");
         return (
             <div>
                 <div><span
                     className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp;
-                    <span>{letters}</span>
+                    <span>{renderedLetters}</span>
+                    &nbsp;&nbsp;
+                    <button onClick={() => this.shuffle()}>Shuffle</button>
                 </div>
                 <form onSubmit={this.handleSubmit}
                       autoComplete="off">
@@ -50,6 +67,14 @@ class Letterpad extends React.Component {
                 </form>
             </div>
         );
+    }
+
+    shuffle() {
+        let letters = this.state.letters.slice(0);
+        letters = shuffle(letters, 6);
+        this.setState({
+           letters
+        });
     }
 }
 

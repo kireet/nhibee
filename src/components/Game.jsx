@@ -6,6 +6,7 @@ import WordBank from "./WordBank";
 import Letterpad from "./Letterpad";
 import Controller from "./Controller";
 import {withCookies} from 'react-cookie';
+import shuffle from "../utils";
 
 class Game extends React.Component {
 
@@ -79,7 +80,7 @@ class Game extends React.Component {
             words,
             dayNumber,
             solved,
-            letters: this.shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
+            letters: shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
         });
     }
 
@@ -92,27 +93,8 @@ class Game extends React.Component {
         return years + subYear;
     }
 
-    shuffle(array, randomIndex) {
-        let currentIndex = array.length;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
-        }
-
-        return array;
-    }
-
     render() {
         let {keyLetter, letters, solved, solutions, pangrams, dayNumber} = this.state;
-        letters = letters.join(" ");
         return (
             <div className="Game">
                 <div className="GameContainer">
