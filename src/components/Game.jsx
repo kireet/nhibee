@@ -44,7 +44,7 @@ class Game extends React.Component {
         let letterChoices = new Set();
         for (const word of words) {
             let letters = new Set(word);
-            if (letters.size === 7) {
+            if (letters.size === 7 && !word.endsWith("ing")) {
                 letterChoices.add(letters);
             }
         }
