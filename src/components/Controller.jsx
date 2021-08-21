@@ -15,6 +15,9 @@ function Controller(props) {
             <div className="finePrint">
             Puzzle #{props.dayNumber}
             </div>
+            <div className="finePrint">
+                {props.pangrams.size} pangram(s)
+            </div>
         </div>
     );
 }

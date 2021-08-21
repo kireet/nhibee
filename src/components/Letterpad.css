@@ -1,0 +1,104 @@
+.upper {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.hexGrid {
+    width: 154px;
+    height: 200px;
+    margin: 0 auto;
+
+}
+.hex {
+    float: left;
+    margin-right: -13px;
+    margin-bottom: -25px;
+    cursor: pointer;
+}
+.hex .left {
+    float: left;
+    width: 0;
+    border-right: 15px solid #e6e6e6;
+    border-top: 26px solid transparent;
+    border-bottom: 26px solid transparent;
+}
+
+#centerLeft {
+    border-right: 15px solid #f7da21;
+}
+
+.hex .middle {
+    float: left;
+    width: 30px;
+    height: 52px;
+    background: #e6e6e6;
+    line-height: 52px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#centerMiddle {
+    background: #f7da21;
+}
+.hex .right {
+    float: left;
+    width: 0;
+    border-left: 15px solid #e6e6e6;
+    border-top: 26px solid transparent;
+    border-bottom: 26px solid transparent;
+}
+
+#centerRight {
+    border-left: 15px solid #f7da21;
+}
+.hexRow {
+    clear: left;
+}
+.hex.even {
+    margin-top: 27px;
+}
+
+.hex.ignored {
+    visibility: hidden;
+}
+
+.roundButton {
+    display: flex;
+    align-items: center;
+    border: solid 1px gray;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    justify-content: center;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.buttonBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#shuffleImage {
+    vertical-align: middle;
+    max-height: 20px;
+    max-width: 20px;
+}
+
+.button {
+    border-radius: 10px;
+    height: 30px;
+    line-height: 30px;
+    width: fit-content;
+    border: solid 1px gray;
+    text-align: center;
+    vertical-align: center;
+    display: inline;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}

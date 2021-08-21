@@ -1,5 +1,6 @@
 import React from 'react';
 import shuffle from "../utils";
+import './Letterpad.css';
 
 class Letterpad extends React.Component {
 
@@ -9,9 +10,6 @@ class Letterpad extends React.Component {
             currentWord: "",
             letters: this.props.letters.slice(0)
         }
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -26,54 +24,113 @@ class Letterpad extends React.Component {
         }
     }
 
-    handleChange(event) {
-        this.setState({currentWord: event.target.value.toLowerCase()});
-    }
-
-    handleSubmit(event) {
-        this.props.onSubmit(this.state.currentWord);
-        this.setState({
-            currentWord: ""
-        });
-        event.preventDefault();
-    }
-
-
     render() {
         const {keyLetter} = this.props;
-        const {currentWord, letters} = this.state;
-
-        const renderedLetters = letters.join(" ");
+        let {currentWord, letters} = this.state;
+        if (currentWord == '') {
+            currentWord = '\u00A0';
+        }
         return (
             <div>
-                <div><span
-                    className="centerLetter">{keyLetter}</span>&nbsp;&nbsp;&nbsp;
-                    <span>{renderedLetters}</span>
-                    &nbsp;&nbsp;
-                    <button onClick={() => this.shuffle()}>Shuffle</button>
+                <div className="upper">{currentWord}</div>
+                <div className="hexGrid">
+                    <div className="hexRow">
+                        <div className="hex ignored">
+                            <div className="left"></div>
+                            <div className="middle"></div>
+                            <div className="right"></div>
+                        </div>
+                        <div className="hex even"
+                             onClick={() => this.addLetter(letters[0])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[0]}</div>
+                            <div className="right"></div>
+                        </div>
+                        <div className="hex ignored">
+                            <div className="left"></div>
+                            <div className="middle"></div>
+                            <div className="right"></div>
+                        </div>
+                    </div>
+                    <div className="hexRow">
+                        <div className="hex"
+                             onClick={() => this.addLetter(letters[1])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[1]}</div>
+                            <div className="right"></div>
+                        </div>
+                        <div className="hex even"
+                             onClick={() => this.addLetter(keyLetter)}>
+                            <div id="centerLeft" className="left"></div>
+                            <div id="centerMiddle"
+                                 className="middle">{keyLetter}</div>
+                            <div id="centerRight" className="right"></div>
+                        </div>
+                        <div className="hex"
+                             onClick={() => this.addLetter(letters[2])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[2]}</div>
+                            <div className="right"></div>
+                        </div>
+                    </div>
+                    <div className="hexRow">
+                        <div className="hex"
+                             onClick={() => this.addLetter(letters[3])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[3]}</div>
+                            <div className="right"></div>
+                        </div>
+                        <div className="hex even"
+                             onClick={() => this.addLetter(letters[4])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[4]}</div>
+                            <div className="right"></div>
+                        </div>
+                        <div className="hex"
+                             onClick={() => this.addLetter(letters[5])}>
+                            <div className="left"></div>
+                            <div className="middle">{letters[5]}</div>
+                            <div className="right"></div>
+                        </div>
+                    </div>
                 </div>
-                <form onSubmit={this.handleSubmit}
-                      autoComplete="off">
-                    <input type="text"
-                           autoComplete="off"
-                           autoCapitalize="off"
-                           autoCorrect="off"
-                           autoFocus
-                           value={currentWord}
-                           onChange={this.handleChange}
-                    />
-                    <input className="controlButton"
-                           type="submit" value="go"/>
-                </form>
+                <div>
+                    <div className="buttonBar">
+                        <div className="button"
+                             onClick={() => this.handleClear()}>clear</div>
+                        <div className="roundButton"
+                              onClick={() => this.shuffle()}>
+                            <img id="shuffleImage"
+                                 src="images/rotate.png"/>
+                        </div>
+                        <div className="button"
+                             onClick={() => this.handleSubmit()}>enter</div>
+                    </div>
+                </div>
             </div>
         );
+    }
+
+    addLetter(letter) {
+        this.setState({currentWord: this.state.currentWord + letter});
+    }
+
+    handleSubmit() {
+        this.props.onSubmit(this.state.currentWord);
+        this.handleClear();
     }
 
     shuffle() {
         let letters = this.state.letters.slice(0);
         letters = shuffle(letters, 6);
         this.setState({
-           letters
+            letters
+        });
+    }
+
+    handleClear() {
+        this.setState({
+            currentWord: ""
         });
     }
 }

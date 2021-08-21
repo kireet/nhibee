@@ -106,6 +106,7 @@ class Game extends React.Component {
                     />
                     <WordBank solved={solved}/>
                     <Controller dayNumber={dayNumber}
+                                pangrams={pangrams}
                                 onReveal={() => this.revealAll()}
                                 onYesterday={() => this.goToYesterday()}/>
                 </div>
