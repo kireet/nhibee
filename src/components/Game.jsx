@@ -48,7 +48,7 @@ class Game extends React.Component {
                 letterChoices.add(letters);
             }
         }
-        letterChoices = Array.from(letterChoices).sort();
+        letterChoices = shuffle(Array.from(letterChoices).sort());
         const letters = letterChoices[dayNumber % letterChoices.length];
         const sortedLetters = Array.from(letters).sort();
         let idx = dayNumber % 7;
@@ -80,7 +80,7 @@ class Game extends React.Component {
             words,
             dayNumber,
             solved,
-            letters: shuffle(sortedLetters, Math.max(0, idx - 1)) /* not random but consistent for dev */
+            letters: shuffle(sortedLetters)
         });
     }
 

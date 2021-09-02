@@ -122,7 +122,7 @@ class Letterpad extends React.Component {
 
     shuffle() {
         let letters = this.state.letters.slice(0);
-        letters = shuffle(letters, 6);
+        letters = shuffle(letters);
         this.setState({
             letters
         });
